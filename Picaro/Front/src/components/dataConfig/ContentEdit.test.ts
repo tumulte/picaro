@@ -37,11 +37,10 @@ describe('ContentEdit', () => {
     it('should display the new content form when there is at least a category', async () => {
         expect(checkVisible([
             //visible
-            'category-warning',
             //not-visible
             'list-display',
             'list-edit'
-        ], wrapper)).toEqual([true, false, false])
+        ], wrapper)).toEqual([false, false])
 
         wrapper.vm.addCategory()
 
@@ -54,19 +53,17 @@ describe('ContentEdit', () => {
             // not-visible
             'list-display',
             'content-edit',
-            'list-edit',
-            'category-warning'], wrapper)).toEqual(
+            'list-edit'], wrapper)).toEqual(
             [
                 true,
                 true,
                 false,
                 false,
                 false,
-                false
             ])
     })
     it('should display existing content', () => {
-        
+
         const contentList = wrapper.findAll('[data-testid="content-list"]')
 
         expect(contentList.length).toBe(1)

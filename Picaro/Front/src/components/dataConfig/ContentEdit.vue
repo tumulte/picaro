@@ -138,52 +138,43 @@ async function saveCategory() {
       </div>
     </VCol>
     <VCol>
-      <div
-        v-if="categories.length === 0"
-        data-testid="category-warning"
+      <h3
+        data-testid="new-content"
       >
-        <p>You must add a category first</p>
+        New content :
+      </h3>
+      <ModelForm
+        :categories="categories"
+        :current-edit-model="currentEditModel"
+        data-testid="new-content-form"
+        @reloadData="dataReloaded = !dataReloaded"
+      />
+      <div class="v-label mt-4">
+        Edit existing content :
       </div>
-
-      <template v-else>
-        <h3
-          data-testid="new-content"
+      <div>
+        <VBtn
+          v-for="status in possibleStatus"
+          :key="status"
+          :color="status === selectedStatus ? 'primary' : ''"
+          variant="text"
+          @click="selectedStatus = status"
         >
-          New content :
-        </h3>
-        <ModelForm
-          :categories="categories"
-          :current-edit-model="currentEditModel"
-          data-testid="new-content-form"
-          @reloadData="dataReloaded = !dataReloaded"
-        />
-        <div class="v-label mt-4">
-          Edit existing content :
-        </div>
-        <div>
-          <VBtn
-            v-for="status in possibleStatus"
-            :key="status"
-            :color="status === selectedStatus ? 'primary' : ''"
-            variant="text"
-            @click="selectedStatus = status"
-          >
-            {{ status }}
-          </VBtn>
-        </div>
-        <DisplayList
-          v-if="settingsStore.currentAppSettings"
-          :categories="categories"
-          :current-app="settingsStore.currentAppSettings"
-          :data-reloaded="dataReloaded"
-          :display-all="true"
-          :display-status="selectedStatus"
-          :module-params="{model: currentEditModel.id, categories: [], type: 'List'}"
-          class="pic-display-edit"
-          data-testid="content-list"
-          @clickItem="editItem($event)"
-        />
-      </template>
+          {{ status }}
+        </VBtn>
+      </div>
+      <DisplayList
+        v-if="settingsStore.currentAppSettings"
+        :categories="categories"
+        :current-app="settingsStore.currentAppSettings"
+        :data-reloaded="dataReloaded"
+        :display-all="true"
+        :display-status="selectedStatus"
+        :module-params="{model: currentEditModel.id, categories: [], type: 'List'}"
+        class="pic-display-edit"
+        data-testid="content-list"
+        @clickItem="editItem($event)"
+      />
     </VCol>
   </VRow>
   <ImageUpload/>
