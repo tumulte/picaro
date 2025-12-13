@@ -274,6 +274,15 @@ const v$ = useVuelidate(rules, form)
             Save
           </VBtn>
           <VBtn
+            v-if="modelFormState === 'addingField'"
+            :disabled="v$.$invalid"
+            color="primary"
+            data-testid="add-field-button"
+            @click="addField"
+          >
+            Add field to model
+          </VBtn>
+          <VBtn
             class="mb-8"
             color="secondary"
             @click="cancelEdit"
@@ -288,18 +297,6 @@ const v$ = useVuelidate(rules, form)
             @click="deleteField"
           >
             delete
-          </VBtn>
-        </div>
-
-        <div class="pic-flex pic-between">
-          <VBtn
-            v-if="modelFormState === 'addingField'"
-            :disabled="v$.$invalid"
-            color="primary"
-            data-testid="add-field-button"
-            @click="addField"
-          >
-            Add field to model
           </VBtn>
         </div>
       </span>

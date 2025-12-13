@@ -33,6 +33,8 @@ const createdDateDisplay = computed<string>(() =>
 
 const displayDate = ref(false)
 
+const displayMeta = ref(false)
+
 const possibleStatus = ['published', "draft", "deleted", "archived"] satisfies ModelContentStatus[]
 
 const componentMap = shallowRef();
@@ -170,38 +172,46 @@ function sendForm(newStatus ?: ModelContent['status']) {
         :field-params="field"
         @updateData="updateData($event)"
       />
-      created : {{ createdDateDisplay }}
-      <VBtn variant="text" @click="displayDate = !displayDate">
-        Change Date
-      </VBtn>
-      <VDatePicker
-        v-if="displayDate"
-        :model-value="createdDate"
-        label="Created"
-        @update:model-value="currentModelContent.created = $event"
-      />
-      <VTextField
-        :model-value="createdDate.getHours()"
-        label="Hour"
-        type="number"
-        variant="outlined"
-        @update:model-value="setHours($event as unknown as number)"
-      />
-      <VSelect
-        v-model="form.categories"
-        :items="filteredCategories"
-        :multiple="true"
-        data-testid="select-categories"
-        item-title="label"
-        item-value="id"
-        label="category"
-        variant="outlined"
-      />
-      <VSelect
-        v-model="currentModelContent.status"
-        :items="possibleStatus"
-        variant="outlined"
-      />
+      <div class="pic-content-form-meta">
+        <VSelect
+          v-model="form.categories"
+          :items="filteredCategories"
+          :multiple="true"
+          data-testid="select-categories"
+          item-title="label"
+          item-value="id"
+          label="category"
+          variant="outlined"
+        />
+        <div v-if="displayMeta">
+          created : {{ createdDateDisplay }}
+          <VBtn variant="text" @click="displayDate = !displayDate">
+            Change Date
+          </VBtn>
+          <VDatePicker
+            v-if="displayDate"
+            :model-value="createdDate"
+            label="Created"
+            @update:model-value="currentModelContent.created = $event"
+          />
+          <VTextField
+            :model-value="createdDate.getHours()"
+            label="Hour"
+            type="number"
+            variant="outlined"
+            @update:model-value="setHours($event as unknown as number)"
+          />
+          <VSelect
+            v-model="currentModelContent.status"
+            :items="possibleStatus"
+            variant="outlined"
+          />
+        </div>
+        <VBtn @click="displayMeta = !displayMeta">
+          <VIcon>mdi-cog</VIcon>
+        </VBtn>
+      </div>
+
       <div class="pic-flex pic-between">
         <VBtn :disabled="v$.$invalid" color="primary" data-testid="content-save" @click="sendForm()">
           Save
@@ -229,6 +239,13 @@ function sendForm(newStatus ?: ModelContent['status']) {
 .model-form-container {
   max-height: calc(100vh - 130px);
   overflow: auto;
+}
+
+.pic-content-form-meta {
+  border: 2px solid var(--greyMedium);
+  border-radius: 10px;
+  padding: var(--m) var(--l);
+  margin-bottom: var(--l);
 }
 </style>
 

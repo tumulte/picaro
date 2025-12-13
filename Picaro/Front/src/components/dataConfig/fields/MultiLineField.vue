@@ -42,10 +42,11 @@ if (props.isEdit) {
 
 </script>
 <template>
-  <label>
+  <div class="pic-multiline">
     <VTextField
       v-for="(text, index) in state.textList"
       :append-icon="state.textList.length > 1 ? 'mdi-delete' : ''"
+      :hide-details="true"
       :label="fieldParams.label"
       :model-value="text"
       :name="fieldParams.name"
@@ -54,5 +55,16 @@ if (props.isEdit) {
       @update:model-value="handleLines($event, index)"
       @click:append="deleteLine(index)"
     />
-  </label>
+  </div>
 </template>
+<style lang="postcss">
+.pic-multiline {
+  border-left: 2px solid var(--secondaryLight);
+  padding-left: var(--l);
+
+  .v-input {
+    margin-bottom: var(--l);
+
+  }
+}
+</style>
